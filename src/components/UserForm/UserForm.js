@@ -2,47 +2,40 @@ import React,{useState} from "react";
 import "./UserForm.css"
 const UserForm = () => {
     const [bookmarks, setBookmarks] = useState([]);
-    const [formData, setFormData]=useState([{name:"",url:""}]);
+    const [namez,setNamez]=useState("");
+    const [urlz,setUrlz]=useState("");
 
     const formHandler = (event) => {
-        if(formData.name==="" || formData.url===""){
+        event.preventDefault();
+        if(namez==="" || urlz===""){
             return;
         }
-        event.preventDefault();
         const newBookmark = {
-        name: formData.name,
-        url: formData.url
+        name: namez,
+        url: urlz
         };
         setBookmarks([...bookmarks, newBookmark]);
-        setFormData({ name: "", url: "" });
+        setNamez("");
+        setUrlz(""); 
     };
     const handleDelete = (index) => {
         setBookmarks(bookmarks.filter((bookmark, i) => i !== index));
       };
     const handleEdit=(index)=>{
-        const selectedBookmark = bookmarks[index];
-    setFormData({
-      name: selectedBookmark.name,
-      url: selectedBookmark.url
-    });    
+         const x=bookmarks[index];
+         setNamez(x.name);
+         setUrlz(x.url);
+         setBookmarks(bookmarks.filter((bookmark, i) => i !== index));
     }
-    const handleChange=(event)=>{
-        const { name, value } = event.target;
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-    }
-
     return <div>
     <form onSubmit={formHandler}>
         <div >
             <label htmlFor="name">Website Name:</label>
-            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange}/>
+            <input type="text" id="name" name="name" value={namez} onChange={(e)=>setNamez(e.target.value)}/>
         </div>
         <div >
             <label htmlFor="url">Website Url:</label>
-            <input type="url" id="url" name="url" value={formData.url} onChange={handleChange}/>
+            <input type="url" id="url" name="url" value={urlz} onChange={(e)=>setUrlz(e.target.value)}/>
         </div>
         <button type="submit">Add</button>
     </form>
